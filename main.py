@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from modules.helper_func import create_drop_shadow
 import sqlite3
 
 
@@ -15,6 +16,7 @@ class App:
         self.create_nav_bar()
         self.create_content_area()
         self.create_frames()
+        self.create_authentication_page()
 
     def create_nav_bar(self):
         nav_bar_frame = tk.Frame(self.root, height=720*.1, bg="#E7AEB2")
@@ -91,6 +93,36 @@ class App:
                 label.grid(row=i, column=j, sticky="nsew", padx=20, pady=20)
 
         # self.switch_main_frame(self.content_area_frame, product_page)
+
+    def create_payment_page(self):
+        payment_page = self.frames["payment_page"]
+        payment_page.grid_rowconfigure(0, weight=1)
+        payment_page.grid_columnconfigure(0, weight=1)
+        payment_page.grid_columnconfigure(1, weight=2)
+        payment_page.grid(padx=30, pady=(30, 120))
+
+        for i in range(1):
+            for j in range(2):
+                label = tk.Label(
+                    payment_page, text=f"Row {i}, Col {j}", borderwidth=1, relief="solid")
+                label.grid(row=i, column=j, sticky="nsew", padx=20, pady=20)
+
+        self.switch_main_frame(self.content_area_frame, payment_page)
+
+    def create_authentication_page(self):
+        auth_page = self.frames["authentication_page"]
+        auth_page.grid_rowconfigure(0, weight=1)
+        auth_page.grid_columnconfigure(0, weight=2)
+        auth_page.grid_columnconfigure(1, weight=3)
+        auth_page.grid(padx=30, pady=30)
+
+        for i in range(1):
+            for j in range(2):
+                label = tk.Label(
+                    auth_page, text=f"Row {i}, Col {j}", borderwidth=1, relief="solid")
+                label.grid(row=i, column=j, sticky="nsew", padx=20, pady=20)
+
+        self.switch_main_frame(self.content_area_frame, auth_page)
 
 
 if __name__ == "__main__":
