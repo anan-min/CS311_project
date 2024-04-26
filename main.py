@@ -1,41 +1,44 @@
-import tkinter as tk  
-from tkinter import ttk  
+import tkinter as tk
+from tkinter import ttk
 import sqlite3
+
 
 class App:
     def __init__(self, root):
-        self.root = root 
-        self.session_id = None  
+        self.root = root
+        self.session_id = None
+        self.root.geometry("1080x720+0+0")
 
-    def create_nav_bar():
-        pass 
+        self.setup_application()
 
-    def open_main_window():
-        pass 
-
-    def open_products_page():
-        pass 
-
-    def open_product_page(product_id):
-        pass 
-
-    def open_cart_page(cart_id):
-        pass 
+    def setup_application(self):
+        self.create_nav_bar()
+        self.create_content_area()
 
 
-    def open_payment_page(cart_id):
-        pass 
+    def create_nav_bar(self):
+        self.nav_bar_frame = tk.Frame(self.root, height=720*.1, bg="#E7AEB2")
+        self.nav_bar_frame.pack(side="top", fill="x")
 
-    def open_authentication_page():
-        # register 
-        # login
-        pass 
 
-    def open_profile_page():
-        pass 
+    def create_content_area(self):
+        self.content_area_frame = tk.Frame(self.root)
+        self.content_area_frame.pack(side="top", fill="both", expand=True)
 
-    def open_orders_page():
-        pass 
+
+    def create_frames(self):
+        self.products_page = tk.Frame(self.root)
+        self.product_page = tk.Frame(self.root)
+        self.authentication_page = tk.Frame(self.root)
+        self.payment_page = tk.Frame(self.root)
+        self.orders_page = tk.Frame(self.root)
+        self.cart_page = tk.Frame(self.root)
+
+
+    
+
+
+
 
 
 
