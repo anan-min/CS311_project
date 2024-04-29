@@ -1,36 +1,37 @@
 import tkinter as tk
+from Views.navbar import Navbar
+from Views.contentArea import ContentArea
 
 
-def create_drop_shadow(widget, offset=3, color='gray'):
-    # Create top shadow
-    shadow_top = tk.Frame(widget.master, bg=color)
-    shadow_top.place(x=widget.winfo_x(), y=widget.winfo_y() -
-                     offset, width=widget.winfo_width(), height=offset)
+class App(tk.Tk):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-    # Create bottom shadow
-    shadow_bottom = tk.Frame(widget.master, bg=color)
-    shadow_bottom.place(x=widget.winfo_x(), y=widget.winfo_y(
-    ) + widget.winfo_height(), width=widget.winfo_width(), height=offset)
+    def config_root(self):
+        self.session_id = None
+        self.geometry("1080x720+0+0")
+        self.frames = {}
+        self.setup_application()
 
-    # Create left shadow
-    shadow_left = tk.Frame(widget.master, bg=color)
-    shadow_left.place(x=widget.winfo_x() - offset, y=widget.winfo_y(),
-                      width=offset, height=widget.winfo_height())
+    def setup_base_template(self):
+        self.create_content_area()
+        self.create_navbar()
+        self.attach_frames()
 
-    # Create right shadow
-    shadow_right = tk.Frame(widget.master, bg=color)
-    shadow_right.place(x=widget.winfo_x() + widget.winfo_width(),
-                       y=widget.winfo_y(), width=offset, height=widget.winfo_height())
+    def create_navbar(self):
+        navbar = Navbar(self, self.frames)
+        self.navbar = navbar
 
+    def create_content_area(self):
+        content_area = ContentArea(self)
+        self.frames = content_area.get_frames()
+        self.content_area = content_area
 
-root = tk.Tk()
-root.geometry('300x300')
+    def attach_frames(self):
+        self.navbar.pack(side="top", fill="x")
+        self.content_area.pack(side="top", fill="x")
 
-# Create the box
-box = tk.Frame(root, width=200, height=200, bg='white')
-box.pack(pady=20)
-
-# Create drop shadow for the box
-create_drop_shadow(box, offset=3, color='gray')
-
-root.mainloop()
+if __name__ == "__main__":
+    app = App()
+    app.config_root()
+    app.mainloop()
