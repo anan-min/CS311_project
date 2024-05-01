@@ -1,26 +1,29 @@
 
 import tkinter as tk
+from tkinter import messagebox
+from modules.database import Database
+from modules.app_data import App_data
 
 
 class Auth_page(tk.Frame):
     LABEL_STYLE = {"bg": "#E7AEB2", "fg": "white",
                    "font": ("Arial", 12, "bold")}
 
-    def __init__(self, parent, frames):
+    def __init__(self, parent, app_data: App_data):
         super().__init__(parent, bg="white")
-        self.frames = frames
+        self.app_data = app_data
         self.config_auth_page()
-        self.grid(row=0, column=0, sticky="news")
+        self.grid(row=0, column=0, sticky="news", padx=30, pady=30)
 
     def config_auth_page(self):
         self.grid_rowconfigure((0, 1, 2), weight=1)
         self.grid_columnconfigure(0, weight=2)
         self.grid_columnconfigure(1, weight=3)
-        self.grid(padx=30, pady=30)
         self.setup_login_frame()
         self.setup_register_frame()
 
     def setup_login_frame(self):
+
         login_frame = tk.Frame(self, bg="#F7F1EE")
         login_frame.grid(row=0, column=0, sticky="news", padx=20, pady=20)
         login_frame.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=2)
@@ -36,18 +39,20 @@ class Auth_page(tk.Frame):
                                   bg="#F7F1EE", fg="#4a4a4a", font=("Arial", 11, "bold"))
         password_entry = tk.Entry(login_frame, bg="white", borderwidth=0)
         login_button = tk.Button(login_frame, text="Login", bg="#E7AEB2", fg="white", font=(
-            "Arial", 11, "bold"), borderwidth=0, highlightthickness=0)
+            "Arial", 11, "bold"), borderwidth=0, highlightthickness=0, command=self.login_button_clicked)
 
         login_title.grid(row=0, column=0, columnspan=3,
                          sticky="sew")
         username_title.grid(row=1, column=0, sticky="sw", padx=15)
         username_entry.grid(row=2, column=0, columnspan=3,
-                            sticky="news", padx=15, pady=10)
+                            sticky="news", padx=15, pady=10, ipadx=10, ipady=5)
         password_title.grid(row=3, column=0, sticky="sw", padx=15)
         password_entry.grid(row=4, column=0, columnspan=3,
-                            sticky="news", padx=15, pady=10)
+                            sticky="news", padx=15, pady=10, ipadx=10, ipady=5)
         login_button.grid(row=5, column=0, columnspan=3,
                           padx=15, pady=20, sticky="news")
+
+        self.login_entry = username_entry, password_entry
 
     def setup_register_frame(self):
         register_frame = tk.Frame(self, bg="#F7F1EE")
@@ -79,7 +84,7 @@ class Auth_page(tk.Frame):
         address_entry = tk.Entry(register_frame, bg="white", borderwidth=0)
 
         register_button = tk.Button(
-            register_frame, text="Register", bg="#E7AEB2", fg="white", font=("Arial", 11, "bold"), borderwidth=0, highlightthickness=0)
+            register_frame, text="Register", bg="#E7AEB2", fg="white", font=("Arial", 11, "bold"), borderwidth=0, command=self.register_button_clicked)
 
         register_title.grid(row=0, column=0, columnspan=3,
                             sticky="ew")
@@ -101,3 +106,81 @@ class Auth_page(tk.Frame):
                          sticky="news", padx=15, pady=5)
         address_entry.grid(row=10, column=0, columnspan=3,
                            sticky="news", padx=15, pady=5)
+
+        self.register_entry = fullname_entry, username_entry, password_entry, email_entry, address_entry
+
+    def login_button_clicked(self):
+        database = self.app_data.get_database()
+
+        username_entry, password_entry = self.login_entry
+        username_input, password_input = username_entry.get(
+        ).strip(), password_entry.get().strip()
+
+        # if not user and not pwd:
+        if not username_input or not password_input:
+            messagebox.showwarning(
+                "Admin : ", "Username and password can't be empty")
+            username_entry.focus_force()
+        else:
+            if database.is_correct_credential(username_input, password_input):
+                messagebox.showwarning(
+                    "Admin : ", "Login successfully")
+            else:
+                username_entry.delete(0, tk.END)
+                password_entry.delete(0, tk.END)
+                messagebox.showwarning(
+                    "Admin : ", "Incorrect Username or Password")
+
+    def register_button_clicked(self):
+        fullname_entry, username_entry, password_entry, email_entry, address_entry = self.register_entry
+
+        fullname_input, username_input, password_input, email_input, address_input = fullname_entry.get(
+        ), username_entry.get(), password_entry.get(), email_entry.get(), address_entry.get()
+
+
+        user_info = username_input, fullname_input, password_input, email_input, address_input
+
+        if not self.is_regis_form_filled():
+            self.focus_unfilled_entry()
+            messagebox.showwarning(
+                "Admin : ", "All form need to be filled")
+        else:
+            if self.is_username_already_exist(username_input):
+                username_entry.delete(0, tk.END)
+                username_entry.focus_force()
+                messagebox.showwarning(
+                    "Admin : ", "username is already used")
+            else:
+                if self.is_email_already_used(email_input):
+                    email_entry.delete(0, tk.END)
+                    email_entry.focus_force()
+                    messagebox.showwarning(
+                        "Admin : ", "email is already used")
+                else:
+                    # register
+                    self.register_new_user(user_info)
+                    messagebox.showwarning(
+                        "Admin : ", "User Register successfully")
+
+            # check email
+
+    def register_new_user(self, user_info):
+        database = self.app_data.get_database()
+        return database.register_new_user(user_info)
+
+    def is_username_already_exist(self, username):
+        database = self.app_data.get_database()
+        return database.is_username_already_exists(username)
+
+    def is_email_already_used(self, email):
+        database = self.app_data.get_database()
+        return database.is_email_already_used(email)
+
+    def is_regis_form_filled(self):
+        return all(entry.get() for entry in self.register_entry)
+
+    def focus_unfilled_entry(self):
+        for entry in self.register_entry:
+            if not entry.get():
+                entry.focus_force()
+                break

@@ -2,14 +2,14 @@ import tkinter as tk
 
 
 class Navbar(tk.Frame):
-    # Define common style properties for all labels
     LABEL_STYLE = {"bg": "#E7AEB2", "fg": "white",
                    "font": ("Arial", 12, "bold")}
 
-    def __init__(self, root, frames):
+    def __init__(self, root, app_data):
         super().__init__(root, bg="#E7AEB2")
         self.root = root
-        self.frames = frames
+        self.app_data = app_data
+        self.app_data.add_frame("navbar", self)
         self.config_navbar()
 
     def config_navbar(self):
