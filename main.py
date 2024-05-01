@@ -1,131 +1,44 @@
 import tkinter as tk
-from tkinter import ttk
-from modules.helper_func import create_drop_shadow
-import sqlite3
+from Views.navbar import Navbar
+from Views.contentArea import ContentArea
+from modules.database import Database
 
 
-class App:
-    def __init__(self, root):
-        self.root = root
+class App(tk.Tk):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def config_root(self):
         self.session_id = None
-        self.root.geometry("1080x720+0+0")
+        # self.db = Database()
+        self.geometry("1080x720+0+0")
+        self.frames = {}
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=9)
+        self.grid_columnconfigure(0, weight=1)
 
-        self.setup_application()
+        self.setup_base_template()
 
-    def setup_application(self):
-        self.create_nav_bar()
+    def setup_base_template(self):
         self.create_content_area()
-        self.create_frames()
-        self.create_authentication_page()
+        self.create_navbar()
+        self.attach_frames()
 
-    def create_nav_bar(self):
-        nav_bar_frame = tk.Frame(self.root, height=720*.1, bg="#E7AEB2")
-        nav_bar_frame.pack(side="top", fill="x")
-        self.nav_bar_frame = nav_bar_frame
+    def create_navbar(self):
+        navbar = Navbar(self, self.frames)
+        self.navbar = navbar
 
     def create_content_area(self):
-        content_area_frame = tk.Frame(self.root)
-        content_area_frame.pack(side="top", fill="both", expand=True)
-        self.content_area_frame = content_area_frame
+        content_area = ContentArea(self)
+        self.frames = content_area.get_frames()
+        self.content_area = content_area
 
-    def create_frames(self):
-        content_area_frame = self.content_area_frame
-        content_area_frame.grid_rowconfigure(0, weight=1)
-        content_area_frame.grid_columnconfigure(0, weight=1)
-
-        self.frames = {}
-        page_names = ["main_page", "products_page", "product_page",
-                      "authentication_page", "payment_page",
-                      "orders_page", "cart_page"]
-
-        for name in page_names:
-            frame = tk.Frame(content_area_frame)
-            self.frames[name] = frame
-
-    def switch_main_frame(self, parent_frame, child_frame):
-        # Forget all other child frames
-        for frame in parent_frame.winfo_children():
-            if frame != child_frame:
-                frame.grid_forget()
-
-        # Grid the selected child frame
-        child_frame.grid(row=0, column=0, sticky="news")
-
-    def create_products_page(self):
-        products_page = self.frames["product_page"]
-        products_page.grid_rowconfigure((0), weight=1)
-        products_page.grid_rowconfigure((1, 2), weight=3)
-        products_page.grid_columnconfigure((0, 1, 2, 3), weight=1)
-
-        for i in range(3):
-            for j in range(4):
-                label = tk.Label(
-                    products_page, text=f"Row {i}, Col {j}", borderwidth=1, relief="solid")
-                label.grid(row=i, column=j, sticky="nsew", padx=20, pady=20)
-
-        # self.switch_main_frame(self.content_area_frame, products_page)
-
-    def create_main_page(self):
-        main_page = self.frames["main_page"]
-        main_page.grid_rowconfigure((0, 1), weight=1)
-        main_page.grid_columnconfigure(0, weight=2)
-        main_page.grid_columnconfigure(1, weight=1)
-
-        for i in range(2):
-            for j in range(2):
-                label = tk.Label(
-                    main_page, text=f"Row {i}, Col {j}", borderwidth=1, relief="solid")
-                label.grid(row=i, column=j, sticky="nsew", padx=20, pady=20)
-
-        # self.switch_main_frame(self.content_area_frame, main_page)
-
-    def create_product_page(self):
-        product_page = self.frames["product_page"]
-        product_page.grid_rowconfigure(0, weight=1)
-        product_page.grid_columnconfigure(0, weight=1)
-        product_page.grid_columnconfigure(1, weight=2)
-        product_page.grid(padx=30, pady=30)
-
-        for i in range(1):
-            for j in range(2):
-                label = tk.Label(
-                    product_page, text=f"Row {i}, Col {j}", borderwidth=1, relief="solid")
-                label.grid(row=i, column=j, sticky="nsew", padx=20, pady=20)
-
-        # self.switch_main_frame(self.content_area_frame, product_page)
-
-    def create_payment_page(self):
-        payment_page = self.frames["payment_page"]
-        payment_page.grid_rowconfigure(0, weight=1)
-        payment_page.grid_columnconfigure(0, weight=1)
-        payment_page.grid_columnconfigure(1, weight=2)
-        payment_page.grid(padx=30, pady=(30, 120))
-
-        for i in range(1):
-            for j in range(2):
-                label = tk.Label(
-                    payment_page, text=f"Row {i}, Col {j}", borderwidth=1, relief="solid")
-                label.grid(row=i, column=j, sticky="nsew", padx=20, pady=20)
-
-        self.switch_main_frame(self.content_area_frame, payment_page)
-
-    def create_authentication_page(self):
-        auth_page = self.frames["authentication_page"]
-        auth_page.grid_rowconfigure(0, weight=1)
-        auth_page.grid_columnconfigure(0, weight=2)
-        auth_page.grid_columnconfigure(1, weight=3)
-        auth_page.grid(padx=30, pady=30)
-
-        for i in range(1):
-            for j in range(2):
-                label = tk.Label(
-                    auth_page, text=f"Row {i}, Col {j}", borderwidth=1, relief="solid")
-                label.grid(row=i, column=j, sticky="nsew", padx=20, pady=20)
-
-        self.switch_main_frame(self.content_area_frame, auth_page)
+    def attach_frames(self):
+        self.navbar.grid(row=0, column=0, sticky="news")
+        self.content_area.grid(row=1, column=0, sticky="news")
 
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = App(root)
-    root.mainloop()
+    app = App()
+    app.config_root()
+    app.mainloop()

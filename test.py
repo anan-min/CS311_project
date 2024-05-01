@@ -1,65 +1,37 @@
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.naive_bayes import GaussianNB
-from lightgbm import LGBMClassifier
-from catboost import CatBoostClassifier
-from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import SGDClassifier
-from xgboost import XGBClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-import pandas as pd
-
-df = pd.read_csv('healthcare-dataset-stroke-data.csv')
-df.head(5)
-
-enc = LabelEncoder()
+import tkinter as tk
+from Views.navbar import Navbar
+from Views.contentArea import ContentArea
 
 
-gender = enc.fit_transform(df['gender'])
-smoking_status = enc.fit_transform(df['smoking_status'])
-work_type = enc.fit_transform(df['work_type'])
-Residence_type = enc.fit_transform(df['Residence_type'])
-ever_married = enc.fit_transform(df['ever_married'])
+class App(tk.Tk):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
+    def config_root(self):
+        self.session_id = None
+        self.geometry("1080x720+0+0")
+        self.frames = {}
+        self.setup_application()
 
-df['work_type'] = work_type
-df['ever_married'] = ever_married
-df['Residence_type'] = Residence_type
-df['smoking_status'] = smoking_status
-df['gender'] = gender
-df.drop('id', axis=1, inplace=True)
-# drop the Attrition_Flag Column
-X = df.drop(['stroke'], axis=1)
-X.head()
+    def setup_base_template(self):
+        self.create_content_area()
+        self.create_navbar()
+        self.attach_frames()
 
-Y = df['stroke']
+    def create_navbar(self):
+        navbar = Navbar(self, self.frames)
+        self.navbar = navbar
 
+    def create_content_area(self):
+        content_area = ContentArea(self)
+        self.frames = content_area.get_frames()
+        self.content_area = content_area
 
-# split data to train data and test data
-X_train, X_test, y_train, y_test = train_test_split(
-    X, Y, test_size=0.2, random_state=10)
+    def attach_frames(self):
+        self.navbar.pack(side="top", fill="x")
+        self.content_area.pack(side="top", fill="x")
 
-
-# Import ML Libraries
-
-classifiers = [[CatBoostClassifier(verbose=0), 'CatBoost Classifier'], [XGBClassifier(), 'XGB Classifier'], [RandomForestClassifier(), 'Random Forest Classifier'],
-               [KNeighborsClassifier(), 'K-Nearest Neighbours'], [SGDClassifier(), 'SGD Classifier'], [
-    SVC(), 'SVC'], [LGBMClassifier(), 'LGBM'], [GaussianNB(), "GaussianNB"],
-    [DecisionTreeClassifier(), 'Decision Tree Classifier'], [LogisticRegression(), 'LogisticRegression']]
-
-
-for cls in classifiers:
-    model = cls[0]
-    model.fit(X_train_std, y_train)
-
-    y_pred = model.predict(X_test_std)
-    accuracy = accuracy_score(y_test, y_pred) * 100
-    print(cls[1])
-    print('Confusion Matrix: ')
-    print(confusion_matrix(y_test, y_pred))
-    print("Accuracy : ", accuracy)
-    print("Recall : ", recall_score(y_test, y_pred) * 100)
-    print("Precision : ", precision_score(y_test, y_pred) * 100)
+if __name__ == "__main__":
+    app = App()
+    app.config_root()
+    app.mainloop()
