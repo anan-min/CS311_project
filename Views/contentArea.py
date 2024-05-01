@@ -1,11 +1,13 @@
 import tkinter as tk
 from modules.helper_func import switch_main_frame
+from Views.auth_page import Auth_page
 
 
 class ContentArea(tk.Frame):
     def __init__(self, root):
-        super().__init__(root)
+        super().__init__(root, bg="white")
         self.root = root
+        self.frames = {} 
         self.config_content_area()
 
     def config_content_area(self):
@@ -13,16 +15,16 @@ class ContentArea(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
 
     def get_frames(self):
-        self.frames = {}
-        page_names = ["main_page", "products_page", "product_page",
-                      "authentication_page", "payment_page",
-                      "orders_page", "cart_page"]
+        page_names = ["main_page", "products_page", "product_page", "payment_page",
+                    "orders_page", "cart_page"]
 
         for page_name in page_names:
             frame = tk.Frame(self)
             self.frames[page_name] = frame
 
         self.frames["content_area"] = self
+        self.frames["auth_page"] = Auth_page(self, self.frames)
+
 
     def create_products_page(self):
         products_page = self.frames["product_page"]
