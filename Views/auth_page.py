@@ -12,8 +12,8 @@ class Auth_page(tk.Frame):
     def __init__(self, parent, app_data: App_data):
         super().__init__(parent, bg="white")
         self.app_data = app_data
-        self.config_auth_page()
-        self.grid(row=0, column=0, sticky="news", padx=30, pady=30)
+        # self.config_auth_page()
+        # self.grid(row=0, column=0, sticky="news", padx=30, pady=30)
 
     def config_auth_page(self):
         self.grid_rowconfigure((0, 1, 2), weight=1)

@@ -6,6 +6,7 @@ class App_data:
         self.frames = {}
         self.database = Database()
         self.current_user = None
+        self.images = []
 
     def add_frame(self, name, frame):
         self.frames[name] = frame
@@ -29,5 +30,8 @@ class App_data:
 
     def close_connection(self):
         self.database.close_connection()
+
+    def add_image(self, image):
+        self.images.appen(image)
 
 

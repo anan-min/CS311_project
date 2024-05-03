@@ -1,6 +1,7 @@
 import tkinter as tk
 from modules.helper_func import switch_main_frame
 from Views.auth_page import Auth_page
+from Views.product_page import Product_page
 
 
 class ContentArea(tk.Frame):
@@ -22,6 +23,9 @@ class ContentArea(tk.Frame):
 
         app_data = self.app_data
         auth_page = Auth_page(self, self.app_data)
+        testProductPage = Product_page(self, self.app_data, 1)
+
+
         app_data.add_frame("content_area", self)
         app_data.add_frame("auth_page", auth_page)
 
