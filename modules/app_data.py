@@ -32,6 +32,6 @@ class App_data:
         self.database.close_connection()
 
     def add_image(self, image):
-        self.images.appen(image)
+        self.images.append(image)
 
 
