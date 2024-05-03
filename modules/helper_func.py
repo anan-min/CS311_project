@@ -1,15 +1,20 @@
 import tkinter as tk
 
 
+def convert_text_to_anchor_left(text):
+    lines = text.split("\n")
+    return "\n".join([f"{line.strip()}" for line in lines])
+
 
 def switch_main_frame(self, parent_frame, child_frame):
-        # Forget all other child frames
-        for frame in parent_frame.winfo_children():
-            if frame != child_frame:
-                frame.grid_forget()
+    # Forget all other child frames
+    for frame in parent_frame.winfo_children():
+        if frame != child_frame:
+            frame.grid_forget()
 
-        # Grid the selected child frame
-        child_frame.grid(row=0, column=0, sticky="news")
+    # Grid the selected child frame
+    child_frame.grid(row=0, column=0, sticky="news")
+
 
 def fetch_data(page_number, item_per_page):
     off_set = (page_number - 1) * item_per_page
