@@ -29,3 +29,5 @@ class App_data:
 
     def close_connection(self):
         self.database.close_connection()
+
+
