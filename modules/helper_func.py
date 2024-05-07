@@ -11,7 +11,7 @@ def convert_text_to_anchor_left(text):
     return "\n".join([f"{line.strip()}" for line in lines])
 
 
-def switch_main_frame(self, parent_frame, child_frame):
+def switch_main_frame(parent_frame, child_frame):
     # Forget all other child frames
     for frame in parent_frame.winfo_children():
         if frame != child_frame:
