@@ -1,5 +1,9 @@
 import tkinter as tk
 from Views.auth_page import Auth_page
+from Views.products_page import Products_page
+from Views.orders_page import Orders_page
+from Views.cart_page import Cart_page
+from Views.main_page import Main_page
 
 
 class Navbar(tk.Frame):
@@ -32,6 +36,23 @@ class Navbar(tk.Frame):
         cart_label.grid(row=0, column=7, sticky="news")
 
         login_label.bind("<Button-1>", self.switch_to_login_page)
+        product_label.bind("<Button-1>", self.switch_to_product_page)
+        orders_label.bind("<Button-1>", self.switch_to_orders_page)
+        cart_label.bind("<Button-1>", self.switch_to_cart_page)
+
+
 
     def switch_to_login_page(self, event):
-        auth_page = Auth_page(self.app_data)
+        if self.app_data.is_user_logged_in:
+            main_page = Main_page(self.app_data)
+        else:
+            auth_page = Auth_page(self.app_data)
+
+    def switch_to_product_page(self, event):
+        products_page = Products_page(self.app_data)
+
+    def switch_to_orders_page(self, event):
+        orders_page = Orders_page(self.app_data)
+
+    def switch_to_cart_page(self, event):
+        cart_page = Cart_page(self.app_data)

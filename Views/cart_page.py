@@ -125,4 +125,4 @@ class Cart_page(tk.Frame):
         return order_frame
 
     def attach_frame_to_parent(self):
-        switch_main_frame(self.parent, self)
+        self.app_data.switch_main_frame(self)

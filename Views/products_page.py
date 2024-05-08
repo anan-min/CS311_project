@@ -80,3 +80,6 @@ class Products_page(tk.Frame):
         print("button is clicked")
         self.app_data.set_current_product(product)
         product_page = Product_page(self.app_data)
+
+    def attach_frame_to_parent(self):
+        self.app_data.switch_main_frame(self)
