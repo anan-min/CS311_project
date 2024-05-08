@@ -7,7 +7,8 @@ from modules.helper_func import load_and_resize_image
 
 
 class Products_page(tk.Frame):
-    def __init__(self, parent, app_data: App_data):
+    def __init__(self, app_data: App_data):
+        parent = app_data.get_content_area()
         super().__init__(parent, bg="white")
 
         self.parent = parent
@@ -79,4 +80,3 @@ class Products_page(tk.Frame):
         print("button is clicked")
         self.app_data.set_current_product(product)
         product_page = Product_page(self, self.app_data)
-

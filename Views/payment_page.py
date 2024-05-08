@@ -5,7 +5,8 @@ from modules.helper_func import load_and_resize_image
 class Payment_page(tk.Frame):
     BG = "#F7F1EE"
 
-    def __init__(self, parent, app_data):
+    def __init__(self,app_data):
+        parent = app_data.get_content_area()
         super().__init__(parent, bg="white")
         self.app_data = app_data
 

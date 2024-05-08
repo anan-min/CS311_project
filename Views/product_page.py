@@ -19,7 +19,8 @@ class Product_page(tk.Frame):
     """)
     BG_COLOUR = "#F7F1EE"
 
-    def __init__(self, parent, app_data):
+    def __init__(self,app_data):
+        parent = app_data.get_content_area()
         super().__init__(parent, bg="white")
         self.parent = parent
         self.app_data = app_data

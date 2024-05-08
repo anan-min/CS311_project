@@ -13,15 +13,12 @@ class Cart_page(tk.Frame):
         "bg": BG_COLOUR
     }
 
-    def __init__(self, parent, app_data: App_data):
+    def __init__(self, app_data: App_data):
+        parent = app_data.get_content_area()
         super().__init__(parent, bg="white")
         self.config_products_page()
-
-        self.grid(row=0, column=0, sticky="news", padx=30, pady=30)
-
         self.parent = parent
         self.app_data = app_data
-
         self.config_products_page()
         self.attach_frame_to_parent()
 
