@@ -29,6 +29,7 @@ class App(tk.Tk):
 
     def create_content_area(self):
         content_area = ContentArea(self, self.app_data)
+        content_area._name = "content_area"
         self.content_area = content_area
 
     def attach_frames(self):

@@ -1,5 +1,5 @@
 import tkinter as tk
-from modules.helper_func import switch_main_frame, load_and_resize_image
+from modules.helper_func import load_and_resize_image
 
 
 class Payment_page(tk.Frame):
@@ -7,7 +7,6 @@ class Payment_page(tk.Frame):
 
     def __init__(self, parent, app_data):
         super().__init__(parent, bg="white")
-        self.parent = parent
         self.app_data = app_data
 
         self.configuration()

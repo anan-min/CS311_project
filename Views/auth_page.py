@@ -3,17 +3,19 @@ import tkinter as tk
 from tkinter import messagebox
 from data.database import Database
 from data.app_data import App_data
+from data.User import User
+
 
 
 class Auth_page(tk.Frame):
     LABEL_STYLE = {"bg": "#E7AEB2", "fg": "white",
                    "font": ("Arial", 12, "bold")}
 
-    def __init__(self, parent, app_data: App_data):
-        super().__init__(parent, bg="white")
+    def __init__(self, app_data: App_data):
+        content_area = app_data.get_content_area()
+        super().__init__(content_area, bg="white")
         self.app_data = app_data
-        # self.config_auth_page()
-        # self.grid(row=0, column=0, sticky="news", padx=30, pady=30)
+        self.config_auth_page()
 
     def config_auth_page(self):
         self.grid_rowconfigure((0, 1, 2), weight=1)
@@ -21,6 +23,7 @@ class Auth_page(tk.Frame):
         self.grid_columnconfigure(1, weight=3)
         self.setup_login_frame()
         self.setup_register_frame()
+        self.attach_frame_to_parent()
 
     def setup_login_frame(self):
 
@@ -107,7 +110,7 @@ class Auth_page(tk.Frame):
         address_entry.grid(row=10, column=0, columnspan=3,
                            sticky="news", padx=15, pady=5)
 
-        self.register_entry = fullname_entry, username_entry, password_entry, email_entry, address_entry
+        self.register_entry = username_entry, fullname_entry, password_entry, email_entry, address_entry
 
     def login_button_clicked(self):
         database = self.app_data.get_database()
@@ -123,6 +126,7 @@ class Auth_page(tk.Frame):
             username_entry.focus_force()
         else:
             if database.is_correct_credential(username_input, password_input):
+                self.login_user(username_input, password_input)
                 messagebox.showwarning(
                     "Admin : ", "Login successfully")
             else:
@@ -132,11 +136,10 @@ class Auth_page(tk.Frame):
                     "Admin : ", "Incorrect Username or Password")
 
     def register_button_clicked(self):
-        fullname_entry, username_entry, password_entry, email_entry, address_entry = self.register_entry
+        username_entry, fullname_entry, password_entry, email_entry, address_entry = self.register_entry
 
-        fullname_input, username_input, password_input, email_input, address_input = fullname_entry.get(
+        username_input, fullname_input, password_input, email_input, address_input = fullname_entry.get(
         ), username_entry.get(), password_entry.get(), email_entry.get(), address_entry.get()
-
 
         user_info = username_input, fullname_input, password_input, email_input, address_input
 
@@ -163,9 +166,15 @@ class Auth_page(tk.Frame):
                         "Admin : ", "User Register successfully")
 
             # check email
+    def login_user(self, username, password):
+        user_info = self.app_data.database.get_user(username, password)
+        self.app_data.set_current_user(User(user_info))
+        print(self.app_data.current_user)
 
     def register_new_user(self, user_info):
         database = self.app_data.get_database()
+        self.app_data.set_current_user(User(user_info))
+
         return database.register_new_user(user_info)
 
     def is_username_already_exist(self, username):
@@ -184,3 +193,6 @@ class Auth_page(tk.Frame):
             if not entry.get():
                 entry.focus_force()
                 break
+
+    def attach_frame_to_parent(self):
+        self.app_data.switch_main_frame(self)

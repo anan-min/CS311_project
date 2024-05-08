@@ -1,7 +1,7 @@
 from PIL import ImageTk, Image
 import tkinter as tk
 from data.app_data import App_data
-from modules.helper_func import load_and_resize_image, switch_main_frame
+from modules.helper_func import load_and_resize_image
 
 
 class Cart_page(tk.Frame):

@@ -17,7 +17,12 @@ class Database:
         self.cursor.execute(sql, (username, password))
         result = self.cursor.fetchall()
         return True if result else False
-
+    
+    def get_user(self, username, password):
+        sql = "SELECT * FROM users WHERE username = ? AND password = ?"
+        self.cursor.execute(sql, (username, password))
+        return self.cursor.fetchone()
+    
     def is_username_already_exists(self, username):
         sql = "SELECT * FROM users WHERE username = ?"
         self.cursor.execute(sql, (username, ))

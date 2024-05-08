@@ -1,6 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox, PhotoImage
 from PIL import Image, ImageTk
+from data.app_data import App_data
+from data.User import User
+from data.Product import Product
+from Views.auth_page import Auth_page
 from modules.helper_func import convert_text_to_anchor_left, load_and_resize_image
 
 
@@ -15,15 +19,20 @@ class Product_page(tk.Frame):
     """)
     BG_COLOUR = "#F7F1EE"
 
-    def __init__(self, parent, app_data, product_id):
+    def __init__(self, parent, app_data):
         super().__init__(parent, bg="white")
         self.parent = parent
         self.app_data = app_data
-        self.product_id = product_id
-
+        self.test()
         self.configuration()
         self.create_and_place_widgets()
         self.attach_frame_to_parent()
+
+    def test(self):
+        self.app_data.current_user = User(
+            "username", "fullname",  "password", "email", "address")
+        self.app_data.current_product = Product(
+            1, "Product 1", 10, "This is product 1")
 
     def configuration(self):
         self.grid_rowconfigure(0, weight=1)
@@ -67,7 +76,7 @@ class Product_page(tk.Frame):
         self.create_quantity_button(quantity_button_frame)
 
         add_to_cart_button = tk.Button(
-            info_frame, text="Add to cart", padx=10, pady=10, borderwidth=0, background="#E7AEB2", foreground="white", font=("Arial", 15, "bold"))
+            info_frame, text="Add to cart", padx=10, pady=10, borderwidth=0, background="#E7AEB2", foreground="white", font=("Arial", 15, "bold"), command=self.add_to_cart_button_clicked)
 
         product_title_widget.grid(row=0, column=0, columnspan=2, sticky="nws")
         product_price_widget.grid(row=1, column=0, columnspan=2, sticky="nws")
@@ -96,7 +105,7 @@ class Product_page(tk.Frame):
 
     def decrease_amount(self):
         current_value = int(self.amount_label["text"])
-        if current_value != 0:
+        if current_value != 1:
             self.amount_label["text"] = str(current_value - 1)
 
     def increase_amount(self):
@@ -104,4 +113,14 @@ class Product_page(tk.Frame):
         self.amount_label["text"] = str(current_value + 1)
 
     def attach_frame_to_parent(self):
-        self.grid(row=0, column=0, sticky="news")
+        self.app_data.switch_main_frame(self)
+        print("attached product page")
+
+    def add_to_cart_button_clicked(self):
+        quantity = int(self.amount_label["text"])
+        if quantity > 0:
+            if self.app_data.is_user_logged_in():
+                self.app_data.add_to_cart(quantity)
+            else:
+                auth_page = Auth_page(self, self.app_data)
+                auth_page.attach_frame_to_parent()

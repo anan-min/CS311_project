@@ -1,19 +1,16 @@
 from PIL import ImageTk, Image
 import tkinter as tk
 from data.app_data import App_data
-from modules.helper_func import load_and_resize_image, switch_main_frame
+from modules.helper_func import load_and_resize_image
 
 
 class Main_page(tk.Frame):
-    def __init__(self, parent, app_data: App_data):
-        super().__init__(parent, bg="white")
+    def __init__(self, app_data: App_data):
+        content_area = app_data.get_content_area()
+        super().__init__(content_area, bg="white")
         self.config_products_page()
-
         self.grid(row=0, column=0, sticky="news", padx=30, pady=30)
-
-        self.parent = parent
         self.app_data = app_data
-
         self.config_products_page()
         self.attach_frame_to_parent()
 
@@ -47,4 +44,4 @@ class Main_page(tk.Frame):
         third_img_widget.grid(row=1, column=1, sticky="news", padx=20, pady=20)
 
     def attach_frame_to_parent(self):
-        switch_main_frame(self.parent, self)
+        self.app_data.switch_main_frame(self)
