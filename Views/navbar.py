@@ -17,7 +17,7 @@ class Navbar(tk.Frame):
         self.grid_columnconfigure((0, 1, 2, 3, 4, 5, 6, 7), weight=1)
 
         shop_label = tk.Label(self, text="SHOP", **self.LABEL_STYLE)
-        shop_label.config(font=("Arial", 16, "bold"))
+        shop_label.config(font=("Arial", 20, "bold"))
 
         product_label = tk.Label(self, text="PRODUCTS", **self.LABEL_STYLE)
         orders_label = tk.Label(self, text="ORDERS", **self.LABEL_STYLE)

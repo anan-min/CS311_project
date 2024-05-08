@@ -1,10 +1,17 @@
 from PIL import Image, ImageTk
 
-def load_and_resize_image(image_path, size=(450,450)):
-    raw_img = Image.open(image_path)
+
+def load_and_resize_image(image_path, size=(450, 450)):
+    new_path = convert_to_forward_slashes(image_path)
+    raw_img = Image.open(new_path)
     resized_img = raw_img.resize(size)
     img = ImageTk.PhotoImage(resized_img)
     return img
+
+
+def convert_to_forward_slashes(path):
+    return path.replace("\\", "/")
+
 
 def convert_text_to_anchor_left(text):
     lines = text.split("\n")

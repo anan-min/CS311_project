@@ -1,4 +1,5 @@
-from modules.database import Database
+from data.database import Database
+from data.Product import Product
 
 
 class App_data:
@@ -7,6 +8,20 @@ class App_data:
         self.database = Database()
         self.current_user = None
         self.images = []
+
+    def generate_products(self):
+        products = []
+
+        for i in range(4):
+            product_id = i + 1
+            product_name = f"Product {product_id}"
+            product_price = 10 + i  # Just an example for price, you can use any logic here
+            product_description = f"This is product {product_id}"
+            products.append(Product(product_id, product_name,
+                            product_price, product_description))
+        return products
+            
+            
 
     def add_frame(self, name, frame):
         self.frames[name] = frame
@@ -33,5 +48,3 @@ class App_data:
 
     def add_image(self, image):
         self.images.append(image)
-
-

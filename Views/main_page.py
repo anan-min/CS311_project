@@ -1,6 +1,6 @@
 from PIL import ImageTk, Image
 import tkinter as tk
-from modules.app_data import App_data
+from data.app_data import App_data
 from modules.helper_func import load_and_resize_image, switch_main_frame
 
 

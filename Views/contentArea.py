@@ -5,6 +5,8 @@ from Views.product_page import Product_page
 from Views.payment_page import Payment_page
 from Views.products_page import Products_page
 from Views.main_page import Main_page
+from Views.cart_page import Cart_page
+from Views.orders_page import Orders_page
 
 
 class ContentArea(tk.Frame):
@@ -21,7 +23,7 @@ class ContentArea(tk.Frame):
 
     def create_frames(self):
         # product_page = Product_page(self, self.app_data, 1)
-        main_page = Main_page(self, self.app_data)
+        products_page = Products_page(self, self.app_data)
 
     def create_products_page(self):
         products_page = self.frames["product_page"]

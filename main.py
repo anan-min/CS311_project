@@ -1,8 +1,8 @@
 import tkinter as tk
 from Views.navbar import Navbar
 from Views.contentArea import ContentArea
-from modules.database import Database
-from modules.app_data import App_data
+from data.database import Database
+from data.app_data import App_data
 
 
 class App(tk.Tk):

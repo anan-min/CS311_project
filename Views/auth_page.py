@@ -1,8 +1,8 @@
 
 import tkinter as tk
 from tkinter import messagebox
-from modules.database import Database
-from modules.app_data import App_data
+from data.database import Database
+from data.app_data import App_data
 
 
 class Auth_page(tk.Frame):
