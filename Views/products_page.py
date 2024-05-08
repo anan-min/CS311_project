@@ -1,6 +1,7 @@
 from PIL import ImageTk, Image
 import tkinter as tk
 from modules.app_data import App_data
+from modules.helper_func import load_and_resize_image
 
 
 class Products_page(tk.Frame):
@@ -15,25 +16,29 @@ class Products_page(tk.Frame):
 
     def config_products_page(self):
         self.grid_rowconfigure((0), weight=1)
-        self.grid_rowconfigure((1, 2), weight=3)
+        self.grid_rowconfigure((1, 2), weight=4)
         self.grid_columnconfigure((0, 1, 2, 3), weight=1)
 
-        for i in range(3):
+        for i in range(1, 3):
             for j in range(4):
-                product_frame = tk.Frame(self, background="red")
-                product_frame.pack_propagate()
+                product_frame = tk.Frame(
+                    self, background="red")
+                product_frame.grid_propagate(False)
+                product_frame.grid_rowconfigure(0, weight=5)
+                product_frame.grid_rowconfigure(1, weight=1)
+                product_frame.grid_columnconfigure(1, weight=1)
 
-                raw_img = Image.open("images/fairy.jpeg")
-                resized_img = raw_img.resize((400, 400))
-                photo_img = ImageTk.PhotoImage(resized_img)
+                img = load_and_resize_image("images/fairy.jpeg", (200, 200))
 
                 product_img_widget = tk.Label(
-                    product_frame, background="green")
-                product_info_frame = tk.Frame(
-                    product_frame, background="blue")
+                    product_frame,  image=img)
+                product_info_frame = tk.Label(
+                    product_frame, text="this is a price", height=3)
 
-                product_img_widget.pack(expand=True, fill="both")
-                product_info_frame.pack(expand=True, fill="both")
+                product_img_widget.image = img
+
+                product_img_widget.grid(row=0, column=0, sticky="news")
+                product_info_frame.grid(row=1, column=0, sticky="news")
 
                 product_frame.grid(
-                    row=i, column=j, sticky="nsew", padx=20, pady=20)
+                    row=i, column=j, sticky="nsew", padx=30, pady=20)

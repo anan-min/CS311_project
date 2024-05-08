@@ -3,6 +3,7 @@ from modules.helper_func import switch_main_frame
 from Views.auth_page import Auth_page
 from Views.product_page import Product_page
 from Views.payment_page import Payment_page
+from Views.products_page import Products_page
 
 
 class ContentArea(tk.Frame):
@@ -19,7 +20,7 @@ class ContentArea(tk.Frame):
 
     def create_frames(self):
         # product_page = Product_page(self, self.app_data, 1)
-        payment_page = Payment_page(self, self.app_data)
+        products_page = Products_page(self, self.app_data)
 
     def create_products_page(self):
         products_page = self.frames["product_page"]
