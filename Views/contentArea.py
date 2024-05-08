@@ -23,7 +23,7 @@ class ContentArea(tk.Frame):
         self.create_frames()
 
     def create_frames(self):
-        Main_page(self.app_data)
+        Products_page(self.app_data)
 
     def create_products_page(self):
         products_page = self.frames["product_page"]

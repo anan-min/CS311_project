@@ -19,7 +19,7 @@ class Products_page(tk.Frame):
 
     def config_products_page(self):
         self.grid_rowconfigure(0, weight=1)
-        self.grid_rowconfigure((1, 2), weight=6)
+        self.grid_rowconfigure((1, 2), weight=7)
         self.grid_columnconfigure((0, 1, 2, 3), weight=1)
         self.grid_propagate(False)
         self.pack_propagate(False)
@@ -51,7 +51,7 @@ class Products_page(tk.Frame):
                     self)
 
                 product_frame.grid_propagate(False)
-                product_frame.grid_rowconfigure(0, weight=5)
+                product_frame.grid_rowconfigure(0, weight=6)
                 product_frame.grid_rowconfigure(1, weight=1)
                 product_frame.grid_columnconfigure(1, weight=1)
                 product_frame.grid_propagate(False)
@@ -74,9 +74,9 @@ class Products_page(tk.Frame):
                     "<Double-1>", lambda event, product=product: self.on_product_click(product))
 
                 product_frame.grid(
-                    row=i, column=j, sticky="nsew", padx=25, pady=20)
+                    row=i, column=j, sticky="nsew", padx=25, pady=5)
 
     def on_product_click(self, product):
         print("button is clicked")
         self.app_data.set_current_product(product)
-        product_page = Product_page(self, self.app_data)
+        product_page = Product_page(self.app_data)
