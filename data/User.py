@@ -6,6 +6,8 @@ class User:
         self.email = email
         self.address = address
 
+    # def __init__(user_info):
+
     @classmethod
     def from_userinfo(cls, userinfo):
         return cls(*userinfo)

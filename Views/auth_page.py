@@ -6,7 +6,6 @@ from data.app_data import App_data
 from data.User import User
 
 
-
 class Auth_page(tk.Frame):
     LABEL_STYLE = {"bg": "#E7AEB2", "fg": "white",
                    "font": ("Arial", 12, "bold")}
@@ -168,11 +167,11 @@ class Auth_page(tk.Frame):
             # check email
     def login_user(self, username, password):
         user_info = self.app_data.database.get_user(username, password)
-        self.app_data.set_current_user(User(user_info))
+        self.app_data.set_current_user(User.from_userinfo(user_info))
 
     def register_new_user(self, user_info):
         database = self.app_data.get_database()
-        self.app_data.set_current_user(User(user_info))
+        self.app_data.set_current_user(User.from_userinfo(user_info))
 
         return database.register_new_user(user_info)
 
