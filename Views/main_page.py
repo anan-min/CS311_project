@@ -2,6 +2,7 @@ from PIL import ImageTk, Image
 import tkinter as tk
 from data.app_data import App_data
 from modules.helper_func import load_and_resize_image
+from Views.product_page import Product_page
 
 
 class Main_page(tk.Frame):
@@ -26,9 +27,12 @@ class Main_page(tk.Frame):
                     self, text=f"Row {i}, Col {j}", borderwidth=1, relief="solid")
                 label.grid(row=i, column=j, sticky="nsew", padx=20, pady=20)
 
-        img1 = load_and_resize_image("images/teletubbies.jpeg", (540, 540))
-        img2 = load_and_resize_image("images/teletubbies.jpeg", (470, 470))
-        img3 = load_and_resize_image("images/teletubbies.jpeg", (470, 470))
+        img1 = load_and_resize_image(
+            "images/labubu.png", (520, 520))  # 9
+        img2 = load_and_resize_image(
+            "images/donald_cover3.webp", (480, 480))  # 5
+        img3 = load_and_resize_image(
+            "images/lilios_cover.webp", (480, 300))  # 11
 
         first_img_widget = tk.Label(self, image=img1)
         first_img_widget.image = img1
@@ -42,6 +46,33 @@ class Main_page(tk.Frame):
         second_img_widget.grid(
             row=0, column=1, sticky="news", padx=20, pady=20)
         third_img_widget.grid(row=1, column=1, sticky="news", padx=20, pady=20)
+
+        first_img_widget.bind("<Button-1>", self.on_image_click_1)
+        second_img_widget.bind("<Button-1>", self.on_image_click_2)
+        third_img_widget.bind("<Button-1>", self.on_image_click_3)
+
+    def on_image_click_1(self, event):
+        product = self.app_data.get_product(9)
+        self.app_data.current_product = product
+
+        product_page = Product_page(self.app_data)
+        product_page.attach_frame_to_parent()
+
+
+    def on_image_click_2(self, event):
+        product = self.app_data.get_product(5)
+        self.app_data.current_product = product
+
+        product_page = Product_page(self.app_data)
+        product_page.attach_frame_to_parent()
+
+
+    def on_image_click_3(self, event):
+        product = self.app_data.get_product(11)
+        self.app_data.current_product = product
+        product_page = Product_page(self.app_data)
+        product_page.attach_frame_to_parent()
+
 
     def attach_frame_to_parent(self):
         self.app_data.switch_main_frame(self)

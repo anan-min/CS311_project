@@ -5,7 +5,7 @@ from modules.helper_func import load_and_resize_image
 class Payment_page(tk.Frame):
     BG = "#F7F1EE"
 
-    def __init__(self,app_data):
+    def __init__(self, app_data):
         parent = app_data.get_content_area()
         super().__init__(parent, bg="white")
         self.app_data = app_data
@@ -39,6 +39,7 @@ class Payment_page(tk.Frame):
         image_widget = tk.Label(QR_code_frame, image=img,
                                 background=self.BG, padx=40, pady=40)
         image_widget.image = img
+        
 
         total_price_label = tk.Label(QR_code_frame, text="Total price: $2045", background=self.BG,
                                      padx=30, pady=30, foreground="black", font=("Arial", 15, "bold"))
@@ -86,6 +87,22 @@ class Payment_page(tk.Frame):
 
         confirm_payment_button.grid(
             row=5, column=0, sticky="news", padx=10, pady=30)
+        
+        self.transfer_amount_entry = tranfer_amount_entry
+        self.transfer_time_entry = transfer_time_entry
+
+
+    def confirm_payment_button_clicked(self):
+        transaction = self.current_transaction
+        # add info to transaction  
+        transaction.set(transaction.get_subtotal(), self.transfer_time_entry) 
+        # add all the product and transaction to database 
+        
+        # create new transaction / clear cart 
+        # switch to main page
+        
+
+
 
     def attach_frame_to_parent(self):
-        switch_main_frame(self.parent, self)
+        self.app_data.switch_main_frame(self)

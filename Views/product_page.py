@@ -10,37 +10,23 @@ from modules.helper_func import convert_text_to_anchor_left, load_and_resize_ima
 
 class Product_page(tk.Frame):
 
-    PRODUCT_INFO = convert_text_to_anchor_left("""
-        Brand: POP MART
-        Size: About 22cm*14cm*32cm
-        Material: 
-        Shell:97% Polyester fiber,3% Spandex
-        Stuffing:70% Polyester fiber,23%POM,7%PE particles
-    """)
     BG_COLOUR = "#F7F1EE"
 
-    def __init__(self,app_data):
+    def __init__(self, app_data):
         parent = app_data.get_content_area()
         super().__init__(parent, bg="white")
         self.parent = parent
         self.app_data = app_data
-        self.test()
+        self.product = app_data.current_product
         self.configuration()
         self.create_and_place_widgets()
         self.attach_frame_to_parent()
-
-    def test(self):
-        self.app_data.current_user = User(
-            "username", "fullname",  "password", "email", "address")
-        self.app_data.current_product = Product(
-            1, "Product 1", 10, "This is product 1")
 
     def configuration(self):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=3)
         self.grid_columnconfigure(1, weight=5)
         self.grid_propagate(False)
-        self.grid(padx=50, pady=(50, 150))
 
     def create_and_place_widgets(self):
         self.create_and_place_image_frame()
@@ -48,29 +34,31 @@ class Product_page(tk.Frame):
 
     def create_and_place_image_frame(self):
         image_frame = tk.Frame(self, background="#F7F1EE")
-        image_frame.grid(row=0, column=0, sticky="news", padx=10)
+        image_frame.grid(row=0, column=0, sticky="news", padx=20, pady=110)
         image_frame.pack_propagate(False)
 
-        img = load_and_resize_image("images/fairy.jpeg")
+        img = load_and_resize_image(self.product.product_image)
         image_widget = tk.Label(image_frame, image=img)
         image_widget.image = img
         image_widget.pack(fill=tk.BOTH, expand=True)
 
     def create_and_place_info_frame(self):
         info_frame = tk.Frame(self, background="#F7F1EE")
-        info_frame.grid(row=0, column=1, sticky="news")
+        info_frame.grid(row=0, column=1, sticky="news", padx=20, pady=110)
         info_frame.grid_propagate(False)
 
         info_frame.grid_rowconfigure((0, 1, 3), weight=1)
         info_frame.grid_rowconfigure(2, weight=3)
         info_frame.columnconfigure((0, 1), weight=1)
 
+        product = self.product
+
         product_title_widget = tk.Label(
-            info_frame, text="CRYBABY CHEER UP, BABY! SERIES-Plush Doll", padx=40, pady=20, font=("Arial", 16, "bold"), background=self.BG_COLOUR)
+            info_frame, text=product.product_name, padx=40, pady=20, font=("Arial", 16, "bold"), background=self.BG_COLOUR)
         product_price_widget = tk.Label(
-            info_frame, text="$1050", padx=40, pady=10, font=("Arial", 20, "bold"), background=self.BG_COLOUR, foreground="#E7AEB2")
+            info_frame, text=product.product_price, padx=40, pady=10, font=("Arial", 20, "bold"), background=self.BG_COLOUR, foreground="#E7AEB2")
         product_description_widget = tk.Label(
-            info_frame, text=self.PRODUCT_INFO, justify=tk.LEFT, padx=40, pady=10, font=("Arial", 12), background=self.BG_COLOUR)
+            info_frame, text=product.product_description, justify=tk.LEFT, padx=40, pady=10, font=("Arial", 12), background=self.BG_COLOUR)
 
         quantity_button_frame = tk.Frame(
             info_frame, padx=60, pady=30, background=self.BG_COLOUR)
@@ -85,7 +73,7 @@ class Product_page(tk.Frame):
             row=2, column=0, columnspan=2, sticky="nws")
 
         quantity_button_frame.grid(
-            row=3, column=0, sticky="news", padx=(0, 10), pady=30)
+            row=3, column=0, sticky="news", padx=(0, 10), pady=10)
         add_to_cart_button.grid(
             row=3, column=1, sticky="news", padx=(0, 30), pady=50)
 
@@ -115,13 +103,11 @@ class Product_page(tk.Frame):
 
     def attach_frame_to_parent(self):
         self.app_data.switch_main_frame(self)
-        print("attached product page")
 
     def add_to_cart_button_clicked(self):
         quantity = int(self.amount_label["text"])
-        if quantity > 0:
-            if self.app_data.is_user_logged_in():
-                self.app_data.add_to_cart(quantity)
-            else:
-                auth_page = Auth_page(self, self.app_data)
-                auth_page.attach_frame_to_parent()
+        if self.app_data.is_user_logged_in():
+            self.app_data.add_to_cart(quantity)
+        else:    
+            auth_page = Auth_page(self.app_data)
+            auth_page.attach_frame_to_parent()

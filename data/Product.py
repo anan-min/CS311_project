@@ -52,7 +52,7 @@ class Product:
     # Static method to create a blank product
     @staticmethod
     def blank_product():
-        return Product(None, "No product available", 0, "No product description available", "images/No-Image-Placeholder.png", True)
+        return Product("None", "No product available", 0, "No product description available", "images/No-Image-Placeholder.png", True)
 
     # String representation of the Product object
     def __str__(self):

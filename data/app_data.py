@@ -14,6 +14,12 @@ class App_data:
         self.current_user = None
         self.current_product = None
         self.content_area = None
+        self.products = self.get_products()
+
+    def get_product(self, product_id):
+        for product in self.products:
+            if int(product.get_product_id()) == int(product_id):
+                return product
 
     def set_conten_area(self, content_area):
         self.content_area = content_area
@@ -36,18 +42,6 @@ class App_data:
     def set_current_user(self, user):
         self.current_user = user
         self.current_transaction.set_user_id(user.get_username())
-
-    def generate_products(self):
-        products = []
-
-        for i in range(4):
-            product_id = i + 1
-            product_name = f"Product {product_id}"
-            product_price = 10 + i  # Just an example for price, you can use any logic here
-            product_description = f"This is product {product_id}"
-            products.append(Product(product_id, product_name,
-                            product_price, product_description))
-        return products
 
     def add_frame(self, name, frame):
         self.frames[name] = frame
@@ -80,7 +74,6 @@ class App_data:
 
     def switch_main_frame(self, child_frame):
         content_area = self.content_area
-        print(content_area._name)
         # Forget all other child frames
         for frame in content_area.winfo_children():
             if frame != child_frame:
@@ -88,3 +81,26 @@ class App_data:
 
         # Grid the selected child frame
         child_frame.grid(row=0, column=0, sticky="news")
+
+    def insert_orders(orders):
+        pass
+
+    def insert_transaction(transaction):
+        pass
+
+    def push_transaction(self):
+        transaction = self.current_transaction
+        # push all the orders
+        self.insert_orders(transaction.get_orders())
+        # push the transaction
+        self.insert_transaction(transaction)
+        # clear cart/transaction
+        self.current_transaction = Transaction()
+        pass
+
+    def fetch_products(self):
+        self.products = self.database.get_products()
+
+    def get_products(self):
+        self.fetch_products()
+        return self.products

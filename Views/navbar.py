@@ -40,13 +40,8 @@ class Navbar(tk.Frame):
         orders_label.bind("<Button-1>", self.switch_to_orders_page)
         cart_label.bind("<Button-1>", self.switch_to_cart_page)
 
-
-
     def switch_to_login_page(self, event):
-        if self.app_data.is_user_logged_in:
-            main_page = Main_page(self.app_data)
-        else:
-            auth_page = Auth_page(self.app_data)
+        Auth_page(self.app_data)
 
     def switch_to_product_page(self, event):
         products_page = Products_page(self.app_data)

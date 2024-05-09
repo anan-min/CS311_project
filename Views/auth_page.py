@@ -169,7 +169,6 @@ class Auth_page(tk.Frame):
     def login_user(self, username, password):
         user_info = self.app_data.database.get_user(username, password)
         self.app_data.set_current_user(User(user_info))
-        print(self.app_data.current_user)
 
     def register_new_user(self, user_info):
         database = self.app_data.get_database()

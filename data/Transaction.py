@@ -10,8 +10,13 @@ class Transaction:
         self.payment_amount = payment_amount
         self.orders = []
 
+    def calculate_subtotal(self):
+        subtotal = 0
+        for order in self.orders:
+            subtotal += order.get_product().get_product_price() * order.get_quantity()
+        return subtotal
+
     def add_order(self, order):
-        print(order)
         self.orders.append(order)
 
     def get_orders(self):
