@@ -23,7 +23,7 @@ class ContentArea(tk.Frame):
         self.create_frames()
 
     def create_frames(self):
-        Auth_page(self.app_data)
+        Main_page(self.app_data)
 
 
  

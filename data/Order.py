@@ -6,10 +6,14 @@ from data.Transaction import Transaction
 
 class Order:
 
-    def __init__(self, product: Product, quantity: int):
+    def __init__(self, product: Product, user: User, quantity: int):
         self.order_id = str(uuid.uuid4())
         self.product = product
+        self.user = user
         self.quantity = quantity
+
+    def order_to_sql(self):
+        return self.order_id, self.user.get_username(), self.product.get_product_id(), self.quantity
 
     def get_product_title(self):
         return self.product.get_product_name()
@@ -25,7 +29,7 @@ class Order:
 
     @staticmethod
     def blank_order():
-        return Order(Product.blank_product(), 0)
+        return Order(Product.blank_product(), None, 0)
 
     def get_product(self):
         return self.product

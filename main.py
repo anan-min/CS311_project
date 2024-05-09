@@ -45,3 +45,12 @@ if __name__ == "__main__":
     app.config_app()
     app.mainloop()
     app.close_database()
+
+    
+# if __name__ == "__main__":
+#     db = Database()
+#     transactions = db.get_transactions()
+
+#     for transaction in transactions:
+#         print(transaction)
+

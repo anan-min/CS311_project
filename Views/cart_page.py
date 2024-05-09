@@ -22,9 +22,6 @@ class Cart_page(tk.Frame):
         self.app_data = app_data
         self.parent = parent
         self.order_frames = []
-
-        test = self.test()
-
         self.config_products_page()
         self.attach_frame_to_parent()
 
@@ -38,39 +35,7 @@ class Cart_page(tk.Frame):
         self.create_orders_frame()
         self.create_info_frame()
 
-    def test(self):
-        product1 = Product(1, "Hirono", 9.99,
-                           "A beautiful flower", "images/fairy.jpeg")
-        product2 = Product(2, "Sakura", 12.99,
-                           "A delicate cherry blossom", "images/img_reality.jpeg")
-        product3 = Product(3, "Momiji", 8.99,
-                           "A vibrant maple leaf", "images/hirono.jpg")
-
-        order1 = Order(product1, 1)
-        order2 = Order(product2, 3)
-        order3 = Order(product3, 2)
-
-        self.app_data.current_transaction.add_order(order1)
-        self.app_data.current_transaction.add_order(order2)
-        self.app_data.current_transaction.add_order(order3)
-
-        product4 = Product(
-            4, "Rose", 11.99, "A classic symbol of love", "images/img_reality.jpeg")
-        product5 = Product(
-            5, "Sunflower", 10.99, "A bright and cheerful flower", "images/hirono.jpg")
-        product6 = Product(
-            6, "Tulip", 9.49, "A popular spring flower", "images/img_reality.jpeg")
-
-        order4 = Order(product4, 1)
-        order5 = Order(product5, 2)
-        order6 = Order(product6, 3)
-
-        self.app_data.current_transaction.add_order(order4)
-        self.app_data.current_transaction.add_order(order5)
-        # self.app_data.current_transaction.add_order(order6)
-
     def create_info_frame(self):
-
         info_frame = tk.Frame(self, bg="#F7F1EE")
         info_frame.grid(row=1, column=2, rowspan=2, columnspan=3,
                         sticky="news", padx=15, pady=15)

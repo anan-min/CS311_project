@@ -1,5 +1,7 @@
 import tkinter as tk
 from modules.helper_func import load_and_resize_image
+from Views.main_page import Main_page
+from tkinter import messagebox
 
 
 class Payment_page(tk.Frame):
@@ -25,6 +27,7 @@ class Payment_page(tk.Frame):
         self.create_form_frame()
 
     def create_QR_code_frame(self):
+        transaction = self.app_data.current_transaction
         QR_code_frame = tk.Frame(self, background=self.BG)
         QR_code_frame.grid(row=0, column=0, sticky="nsew",
                            padx=30, pady=(30, 150))
@@ -39,9 +42,8 @@ class Payment_page(tk.Frame):
         image_widget = tk.Label(QR_code_frame, image=img,
                                 background=self.BG, padx=40, pady=40)
         image_widget.image = img
-        
 
-        total_price_label = tk.Label(QR_code_frame, text="Total price: $2045", background=self.BG,
+        total_price_label = tk.Label(QR_code_frame, text=f"Total price: ${transaction.calculate_subtotal()}", background=self.BG,
                                      padx=30, pady=30, foreground="black", font=("Arial", 15, "bold"))
 
         image_widget.grid(row=0, column=0, sticky="news")
@@ -71,7 +73,7 @@ class Payment_page(tk.Frame):
         transfer_time_entry = tk.Entry(form_frame, bg="white", fg="black")
 
         confirm_payment_button = tk.Button(
-            form_frame, text="Confirm Purchase", bg="#E7AEB2", fg="white", borderwidth=0, font=("Arial", 16, "bold"))
+            form_frame, text="Confirm Purchase", bg="#E7AEB2", fg="white", borderwidth=0, font=("Arial", 16, "bold"), command=self.confirm_payment_button_clicked)
 
         payment_heading_label.grid(
             row=0, column=0, sticky="news", padx=10, pady=(10, 0))
@@ -87,22 +89,21 @@ class Payment_page(tk.Frame):
 
         confirm_payment_button.grid(
             row=5, column=0, sticky="news", padx=10, pady=30)
-        
+
         self.transfer_amount_entry = tranfer_amount_entry
         self.transfer_time_entry = transfer_time_entry
 
-
     def confirm_payment_button_clicked(self):
-        transaction = self.current_transaction
-        # add info to transaction  
-        transaction.set(transaction.get_subtotal(), self.transfer_time_entry) 
-        # add all the product and transaction to database 
-        
-        # create new transaction / clear cart 
-        # switch to main page
-        
 
+        transaction = self.app_data.current_transaction
+        transaction.payment_amount = self.transfer_amount_entry.get()
+        transaction.payment_time = self.transfer_time_entry.get()
 
+        messagebox.showwarning(
+            "Admin : ", "Payment successfully")
+
+        self.app_data.save_transaction()
+        Main_page(self.app_data)
 
     def attach_frame_to_parent(self):
         self.app_data.switch_main_frame(self)

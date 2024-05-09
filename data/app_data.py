@@ -16,6 +16,10 @@ class App_data:
         self.content_area = None
         self.products = self.get_products()
 
+    def get_transactions(self):
+        transactions = self.database.get_transactions()
+        return transactions
+
     def get_product(self, product_id):
         for product in self.products:
             if int(product.get_product_id()) == int(product_id):
@@ -33,10 +37,7 @@ class App_data:
     def set_current_product(self, product):
         self.current_product = product
 
-    def add_to_cart(self, quantity):
-        order = Order(self.current_user,
-                      self.current_product, self.current_transaction, quantity)
-
+    def add_to_cart(self, order):
         self.current_transaction.add_order(order)
 
     def set_current_user(self, user):
@@ -82,11 +83,18 @@ class App_data:
         # Grid the selected child frame
         child_frame.grid(row=0, column=0, sticky="news")
 
-    def insert_orders(orders):
-        pass
+    def save_transaction(self):
+        self.insert_orders()
+        self.insert_transaction()
 
-    def insert_transaction(transaction):
-        pass
+    def insert_orders(self):
+        orders = self.current_transaction.get_orders()
+        transaction_id = self.current_transaction.get_transaction_id()
+        for order in orders:
+            self.database.insert_order(order)
+
+    def insert_transaction(self):
+        self.database.insert_transaction(self.current_transaction)
 
     def push_transaction(self):
         transaction = self.current_transaction

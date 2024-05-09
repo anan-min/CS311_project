@@ -1,12 +1,7 @@
 import tkinter as tk
-from tkinter import messagebox, PhotoImage
-from PIL import Image, ImageTk
-from data.app_data import App_data
-from data.User import User
-from data.Product import Product
 from Views.auth_page import Auth_page
-from modules.helper_func import convert_text_to_anchor_left, load_and_resize_image
-
+from modules.helper_func import load_and_resize_image
+from data.Order import Order
 
 class Product_page(tk.Frame):
 
@@ -94,7 +89,7 @@ class Product_page(tk.Frame):
 
     def decrease_amount(self):
         current_value = int(self.amount_label["text"])
-        if current_value != 1:
+        if current_value > 0:
             self.amount_label["text"] = str(current_value - 1)
 
     def increase_amount(self):
@@ -106,8 +101,12 @@ class Product_page(tk.Frame):
 
     def add_to_cart_button_clicked(self):
         quantity = int(self.amount_label["text"])
+
+        if quantity == 0:
+            return
         if self.app_data.is_user_logged_in():
-            self.app_data.add_to_cart(quantity)
-        else:    
+            order = Order(self.app_data.current_product, self.app_data.current_user, quantity)
+            self.app_data.add_to_cart(order)
+        else:
             auth_page = Auth_page(self.app_data)
             auth_page.attach_frame_to_parent()

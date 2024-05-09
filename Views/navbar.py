@@ -35,13 +35,17 @@ class Navbar(tk.Frame):
         login_label.grid(row=0, column=6, sticky="news")
         cart_label.grid(row=0, column=7, sticky="news")
 
+        shop_label.bind("<Button-1>", self.switch_to_main_page)
         login_label.bind("<Button-1>", self.switch_to_login_page)
         product_label.bind("<Button-1>", self.switch_to_product_page)
         orders_label.bind("<Button-1>", self.switch_to_orders_page)
         cart_label.bind("<Button-1>", self.switch_to_cart_page)
 
+    def switch_to_main_page(self, event):
+        main_page = Main_page(self.app_data)
+
     def switch_to_login_page(self, event):
-        Auth_page(self.app_data)
+        auth_page = Auth_page(self.app_data)
 
     def switch_to_product_page(self, event):
         products_page = Products_page(self.app_data)
