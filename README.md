@@ -1,6 +1,4 @@
-Sure, I can help you create a README file for your GitHub repository based on the information you provided. Here's a basic template you can use:
 
----
 
 # ShopNow
 
